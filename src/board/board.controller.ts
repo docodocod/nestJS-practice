@@ -27,11 +27,12 @@ export class BoardController {
         return this.boardService.create(data);
     }
 
-    @Put()
+    @Put(':id')
     update(
+        @Param('id') id: number,
         @Body() data
     ){
-        return 
+        return this.boardService.update(id,data);
     }
 
     @Delete()

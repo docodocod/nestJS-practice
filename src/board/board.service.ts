@@ -44,21 +44,30 @@ export class BoardService {
         return this.boards[index]
     }
 
-    index(id:number){
-        const index=this.boards.findIndex(board=>board.id == id)
-        return this.boards[index];
+    getBoardId(id:number){
+        return this.boards.findIndex(board=>board.id == id)
     }
 
-    update(id:number, updateContent:string){
-        const board=this.index(id);
-        board.content=updateContent;
-        return board;
+    update(id:number, data){
+        const index=this.getBoardId(id);
+        if( index>-1){
+            this.boards[index]={
+                ...this.boards[index],
+                ...data,
+            };
+            return this.boards[index];
+        }
+        return null;
     }
 
     create(data){
         const newBoard={id: this.getNextId() , ...data}
         this.boards.push(newBoard);
         return newBoard;
+    }
+
+    delete(id:number){
+        
     }
 
     getNextId(){
