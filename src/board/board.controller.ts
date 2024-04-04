@@ -1,7 +1,12 @@
+import { AppService } from './../app.service';
+import { ApiTags } from '@nestjs/swagger';
 import { BoardService } from './board.service';
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, ValidationPipe } from '@nestjs/common';
+import { createBoardDto } from './dto/create-board.dto';
+import { Ip } from 'src/decorators/ip.decorator';
 
 @Controller('board')
+@ApiTags('Board')
 export class BoardController {
     constructor(
         private readonly boardService: BoardService
@@ -22,7 +27,7 @@ export class BoardController {
 
     @Post()
     create(
-        @Body() data
+        @Body() data:createBoardDto
     ){
         return this.boardService.create(data);
     }
@@ -30,15 +35,15 @@ export class BoardController {
     @Put(':id')
     update(
         @Param('id') id: number,
-        @Body() data
+        @Body(new ValidationPipe()) data:createBoardDto
     ){
         return this.boardService.update(id,data);
     }
 
-    @Delete()
+    @Delete(':id')
     remove(
         @Param('id') id: number
     ){
-        return 'delete';
+        return this.boardService.delete(id);
     }
 }
